@@ -71,9 +71,8 @@ recipe data in files.
 ● Develops algorithms for efficient data retrieval and manipulation.
 ● Ensures proper error handling and data validation.
 ● Both team members will be responsible for testing their respective components
-rigorously to identify and address any bugs or issues. Additionally, they will collaborate
+rigorously to identify and address any bugs or issues. Additionally, they will collaborate 
 on integration testing to ensure the smooth functioning of the entire application.
 ● Documentation: Both team members will contribute to the documentation of their
-
 respective components, including code documentation, user manuals, and any other
 relevant documentation required for the project.
