@@ -76,3 +76,90 @@ on integration testing to ensure the smooth functioning of the entire applicatio
 ● Documentation: Both team members will contribute to the documentation of their
 respective components, including code documentation, user manuals, and any other
 relevant documentation required for the project.
+
+
+Phase II: User Requirements and Application Specifications
+Submission Deadline: 18.03.2024, 23:59
+
+Chosen Development Model:
+● Agile Development Model
+● Justification: Agile is selected due to its flexibility and adaptability, which allows
+for iterative development and continuous feedback incorporation. This model suits
+well for a project like Recipe Manager where requirements might evolve over
+time, and stakeholders' feedback is crucial.
+
+
+User Requirements:
+
+a. Stakeholders:
+● End-users: Chefs, kitchen staff, restaurant managers.
+● Clients: Restaurant owners or managers.
+● Developers: Team members involved in the development process.
+● Other stakeholders: Potential investors, IT support personnel.
+
+b. User Stories:
+User Type: Chef (End-user)
+● Requirement: As a chef, I want to easily search for recipes by keywords or
+categories, so I can quickly access the recipe I need during cooking.
+● Benefit: Improved efficiency in finding and utilizing recipes, leading to smoother
+workflow in the kitchen.
+
+
+Functional Requirements:
+
+a. Brief Description:
+● The system should allow users to search for recipes based on various criteria.
+● It should provide options for creating, editing, and deleting recipes.
+● Users should be able to categorize recipes into different types or cuisines.
+
+b. Acceptance Criteria:
+● User can search for recipes by name, ingredient, or category.
+● User can create, edit, and delete recipes with appropriate permissions.
+● Recipes can be tagged with categories and cuisines.
+
+
+Non-Functional Requirements:
+
+a. Brief Description:
+● The system should be user-friendly, with intuitive navigation and controls.
+● It should be responsive and performant, even with a large number of recipes.
+● Security measures should ensure data privacy and integrity.
+
+b. Acceptance Criteria:
+● User interface elements are logically organized and labeled for easy
+understanding.
+● The system responds promptly to user interactions, with minimal latency.
+● User data is encrypted in transit and at rest, and access control mechanisms are in
+place.
+
+
+Application Specifications:
+
+a. Architecture:
+● The system follows a layered architecture, with separate tiers for presentation,
+application logic, and data storage.
+● Communication between components follows RESTful principles for flexibility
+and scalability.
+
+b. Database Model:
+● The database includes tables for storing recipes, users, categories, and other
+relevant entities.
+● Relationships between tables are established to maintain data integrity and support
+querying.
+
+c. Technologies Used:
+● Language: Java
+● Framework: JavaFX for GUI development
+● Database: SQLite for local storage
+● Other: Apache Maven for project management
+
+d. User Interface Design:
+● Wireframes and mockups showcase a clean and intuitive interface, allowing users
+to easily navigate and interact with recipes.
+● Consistent design elements and color schemes enhance user experience.
+
+e. Security Measures:
+● User authentication is implemented to control access to sensitive features.
+● Data encryption is utilized to protect user information, both at rest and in transit.
+● Regular security audits and updates are conducted to mitigate potential
+vulnerabilities
