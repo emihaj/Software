@@ -163,3 +163,129 @@ e. Security Measures:
 ● Data encryption is utilized to protect user information, both at rest and in transit.
 ● Regular security audits and updates are conducted to mitigate potential
 vulnerabilities
+
+Software Architecture:
+The Recipe Manager application is designed with a layered architecture to ensure modularity and
+separation of concerns. It consists of the following layers:
+
+Presentation Layer: This layer includes the graphical user interface (GUI) developed using
+JavaFX framework. It provides the interface for users to interact with the application and
+includes components such as buttons, text fields, and menus.
+Application Logic Layer: This layer contains the core logic of the application. It handles user
+inputs from the GUI, processes data, and communicates with the data storage layer. This layer is
+responsible for functionalities such as searching, editing, and deleting recipes.
+Data Storage Layer: The data storage layer manages the persistent storage of recipe data. It
+utilizes SQLite database for local storage, ensuring efficient data retrieval and manipulation. This
+layer interacts with the application logic layer to provide access to recipe data.
+
+Component Diagram:
+GUI Component: Represents the graphical user interface developed using JavaFX.
+Application Logic Component: Contains the core logic of the application, including
+functionalities such as recipe management and search.
+Data Storage Component: Handles the storage and retrieval of recipe data using SQLite
+database.
+
+Detailed Design:
+Class Diagram:
+The class diagram illustrates the structure of the Recipe Manager application, including the
+classes and their relationship.
+
+Recipe: Represents a generic recipe with attributes such as name and instructions.
+Recipeable: Interface defining the method searchRecipe which is implemented by different
+types of recipes.
+DessertRecipe: Subclass of Recipe representing dessert recipes with an additional attribute type.
+MainDishRecipe: Subclass of Recipe representing main dish recipes with an additional attribute
+typeOfCuisine.
+BeverageRecipe: Subclass of Recipe representing beverage recipes with an additional attribute
+alcorNot.
+
+Sequence Diagrams:
+Sequence diagrams depict the interactions between different components of the system to
+accomplish specific tasks. Below are simplified sequence diagrams for browsing recipes and
+editing a recipe:
+
+Browsing Recipes:
+User → GUI: Clicks on Browse Recipes
+GUI → Application Logic: Request to retrieve recipes
+Application Logic → Data Storage: Retrieve recipe data
+Data Storage → Application Logic: Recipe data
+Application Logic → GUI: Display recipes
+
+Editing Recipe:
+User → GUI: Selects recipe to edit
+GUI →Application Logic: Request to edit recipe
+Application Logic → Data Storage: Retrieve recipe data for editing
+Data Storage → Application Logic: Recipe data
+Application Logic → GUI: Display recipe for editing
+User → GUI: Makes changes to recipe
+GUI → Application Logic: Submit edited recipe
+Application Logic → Data Storage: Update recipe data
+
+Database Design:
+The database design for the Recipe Manager application involves tables to store recipe data
+efficiently. Below is a simplified representation:
+Recipes Table: Contains columns for recipe name, instructions, type (dessert, main dish,
+beverage), type of cuisine (for main dish recipes), and alcohol content (for beverage recipes).
+
+RecipeID Name Instructions Type TypeOfCuisine AlcorNot
+1 Recipe 1 Instructions... Main Italian -
+2 Recipe 2 Instructions... Dessert - -
+3 Recipe 3 Instructions... Beverage - High
+
+Modeling:
+Use Case Diagram:
+The use case diagram outlines the various actions that different types of users can perform within
+the Recipe Manager application:
+Chef: Can browse recipes, search for recipes, edit recipes, and export recipes.
+Restaurant Manager: Can view recipe analytics and manage user accounts.
+Developer: Involved in the development and maintenance of the application.
+Activity Diagrams:
+Activity diagrams illustrate the flow of activities within the Recipe Manager application. Below
+is a simplified activity diagram for editing a recipe:
+Activity 1: User selects recipe to edit.
+Activity 2: Application retrieves recipe data for editing.
+Activity 3: Application displays recipe for editing.
+Activity 4: User makes changes to recipe.
+Activity 5: Application submits edited recipe for update.
+
+Activity Diagram: Editing a Recipe
+User selects recipe to edit: The activity begins when the user selects a recipe from the list to
+edit.
+Application retrieves recipe data for editing: The application receives the request to edit a
+recipe and retrieves the corresponding recipe data from the database.
+Application displays recipe for editing: Once the recipe data is retrieved, the application
+displays the recipe details on the GUI, allowing the user to make modifications.
+User makes changes to recipe: The user interacts with the GUI to make changes to the recipe,
+such as modifying ingredients or instructions.
+Application submits edited recipe: After the user has finished editing the recipe, the
+application receives the updated recipe data.
+Data Storage updates recipe data: The application updates the recipe data in the database with
+the changes made by the user.
+Activity ends: The activity of editing the recipe concludes, and the user can continue using the
+application for other tasks.
+
+State Diagrams:
+State diagrams represent the different states that an object can be in and how it transitions
+between those states. In the context of the Recipe Manager application, state diagrams could be
+used to represent the states of a recipe (e.g., editing, published, deleted) and how it transitions
+between these states based on user actions.
+State Diagram: Recipe States
+State 1: Draft: The initial state of a recipe when it is created or being edited. In this state, the
+recipe is not finalized, and changes can be made to its content.
+State 2: Published: When the recipe is finalized and ready to be shared or viewed by users, it
+transitions to the published state. In this state, the recipe is available for browsing and searching
+within the application.
+State 3: Archived: If the recipe is no longer relevant or needed, it can be archived. In this state,
+the recipe is still stored in the database but is not actively displayed or accessible through the
+user interface.
+Transition 1: Edit: From the draft state, the recipe can transition back to the draft state if further
+edits are required.
+
+Transition 2: Publish: From the draft state, the recipe can transition to the published state once
+it is finalized.
+Transition 3: Unpublish: From the published state, the recipe can transition back to the draft
+state if it needs to be updated or unpublished.
+Transition 4: Archive: From any active state (draft or published), the recipe can be archived,
+transitioning to the archived state.
+Transition 5: Restore: From the archived state, the recipe can be restored, transitioning back to
+either the draft or published state based on its previous state.
