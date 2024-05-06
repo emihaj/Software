@@ -280,7 +280,6 @@ the recipe is still stored in the database but is not actively displayed or acce
 user interface.
 Transition 1: Edit: From the draft state, the recipe can transition back to the draft state if further
 edits are required.
-
 Transition 2: Publish: From the draft state, the recipe can transition to the published state once
 it is finalized.
 Transition 3: Unpublish: From the published state, the recipe can transition back to the draft
@@ -289,3 +288,315 @@ Transition 4: Archive: From any active state (draft or published), the recipe ca
 transitioning to the archived state.
 Transition 5: Restore: From the archived state, the recipe can be restored, transitioning back to
 either the draft or published state based on its previous state.
+
+
+
+Software Testing
+1. Introduction to Testing:
+The Recipe Manager is a Java program designed to store and manage a collection of recipes. The
+goal of the program is to provide a user-friendly interface that allows users to easily access and
+manage their favorite recipes. The target audience is anyone who enjoys cooking and wants an
+easy way to store and organize their recipes. This program helps the audience by providing a
+centralized location to store all their recipes, making it easy to explore, store, edit, and export
+them as needed.Software testing is a critical aspect of the development process, ensuring the
+reliability and correctness of the Recipe Manager. By systematically evaluating the software
+through testing, we can detect and rectify any defects or bugs, thereby enhancing the overall user
+experience and ensuring the success of the program.
+2. Purpose of Testing:
+Identifying defects early:
+Early testing allows us to uncover and address bugs in the initial stages of development,
+minimizing the risk of costly fixes later on. By conducting thorough testing throughout the
+development lifecycle, we can identify and resolve issues promptly, ensuring the stability and
+reliability of the Recipe Manager.
+Verification of functionality:
+Testing serves to verify that all software components, including recipe storage, browsing, editing,
+and exporting functionalities, perform as intended. By rigorously testing each component against
+specified requirements and user expectations, we can ensure that the Recipe Manager meets its
+intended purpose and delivers a seamless user experience.
+Ensuring reliability:
+Thorough testing enhances the reliability of the Recipe Manager by identifying and eliminating
+potential sources of errors or failures. By subjecting the software to various test scenarios and
+conditions, we can validate its robustness and resilience, reducing the likelihood of unexpected
+issues during usage.
+Improving software quality:
+Testing contributes to improving the overall quality and stability of the Recipe Manager by
+identifying and addressing defects. By systematically identifying areas for improvement and
+implementing corrective measures, we can deliver a high-quality product that meets the needs
+and expectations of its users.
+3. Focus on Testing a Single Component:
+In this phase, our testing efforts will be concentrated on a critical component of the Recipe
+Manager: the Recipe class. The Recipe class encapsulates the attributes and functionalities of
+individual recipes, making it essential to ensure its correctness and reliability. Testing this
+component involves validating various functionalities, such as adding ingredients, deleting
+ingredients, and updating instructions, to ensure that they behave as expected under different
+scenarios.
+4. Preparing Test Cases:
+To prepare comprehensive test cases for the Recipe class, we will consider a wide range of
+scenarios, including normal inputs, edge cases, and invalid inputs. Each test case will target
+specific functionalities of the Recipe class, such as adding ingredients, deleting ingredients, and
+updating instructions. Additionally, we will incorporate concepts such as inheritance and
+polymorphism into our test cases to ensure thorough coverage of the Recipe class's behavior.
+5. Choosing Testing Frameworks:
+Given that our project is implemented in Java, we will utilize JUnit as the testing framework for
+unit testing. JUnit offers robust support for writing and executing unit tests in Java, making it
+ideal for our requirements. We will integrate JUnit into our development environment and
+configure test suites to facilitate efficient testing of the Recipe class.
+6. Writing Test Code:
+We will develop test code for the Recipe class, focusing on creating test methods to exercise
+different functionalities. Test methods will cover scenarios such as adding ingredients, deleting
+ingredients, and updating instructions. Assertions will be utilized to validate expected outcomes
+and ensure the correctness of the Recipe class implementation. Additionally, we will leverage
+JUnit's annotations and assertions to streamline the testing process and improve code readability.
+import static org.junit.Assert.*;
+import org.junit.Test;
+public class RecipeTest {
+@Test
+public void testAddIngredient() {
+// Create a new Recipe instance
+Recipe recipe = new Recipe("Chocolate Cake", "Delicious chocolate cake recipe");
+// Add an ingredient to the recipe
+recipe.addIngredient("Flour", "2 cups");
+// Check if the ingredient was added successfully
+assertTrue(recipe.getIngredients().containsKey("Flour"));
+assertEquals("2 cups", recipe.getIngredients().get("Flour"));
+}
+@Test
+public void testDeleteIngredient() {
+// Create a new Recipe instance
+Recipe recipe = new Recipe("Chocolate Cake", "Delicious chocolate cake recipe");
+// Add an ingredient to the recipe
+recipe.addIngredient("Sugar", "1 cup");
+// Delete the ingredient from the recipe
+recipe.deleteIngredient("Sugar");
+// Check if the ingredient was deleted successfully
+assertFalse(recipe.getIngredients().containsKey("Sugar"));
+}
+@Test
+public void testUpdateInstructions() {
+// Create a new Recipe instance
+Recipe recipe = new Recipe("Chocolate Cake", "Delicious chocolate cake recipe");
+// Update the instructions of the recipe
+recipe.updateInstructions("Mix all ingredients together and bake at 350°F for 30 minutes.");
+// Check if the instructions were updated successfully
+assertEquals("Mix all ingredients together and bake at 350°F for 30 minutes.",
+recipe.getInstructions());
+}
+}
+7. Running Tests:
+To execute the tests, we will run the test suite containing the test classes using JUnit. We will
+analyze the test results to ensure that all tests pass successfully. In cases where tests fail or
+encounter errors, we will investigate the issues and make necessary corrections to the Recipe
+class implementation to address any identified defects. Continuous integration and automated
+testing will be leveraged to streamline the testing process and ensure the reliability and stability
+of the Recipe Manager.
+8. Test Coverage:
+Achieving high test coverage is essential to ensure thorough testing of the Recipe Manager
+software. We aim to cover a significant portion of the Recipe class's codebase with our tests,
+encompassing both functional and edge cases. By achieving high test coverage, we can enhance
+confidence in the reliability and correctness of the Recipe Manager, delivering a robust and
+stable product to our users. We will utilize code coverage tools to measure test coverage and
+identify areas for improvement, ensuring that our testing efforts are comprehensive and effective.
+9.Main functionalities of the Recipe Manager program are:
+● Read a recipe
+● Browse through recipes
+● Edit a recipe
+● Delete a recipe
+● Export a recipe to a .txt file
+● Search for a recipe
+10.Project Development/Method Explanation
+The Recipe Manager program uses various Java concepts to implement its functionality. The
+program uses classes to represent different types of recipes, with inheritance and polymorphism
+used to allow for the creation of specialized subclasses of the Recipe class. The program also
+uses a GUI to make it easy for users to interact with the program and manage their recipes. In
+addition, the program uses files to store and read recipe data, and collections to manage the
+recipes.
+11.The development of this program involves the utilization of specific
+concepts, including:
+➢ Classes:
+Several classes are employed, each serving a distinct purpose within the program:
+● Recipe.java
+● DessertRecipe
+● MainDishRecipe
+● BeverageRecipe
+● Recipeable
+● Gui
+➢ Inheritance:
+Inheritance is implemented to establish relationships between classes, facilitating code reuse and
+organization.
+Notably, the classes DessertRecipe, MainDishRecipe, and BeverageRecipe inherit attributes and
+behaviors from the parent class Recipe through the use of the extends keyword.
+1.public class DessertRecipe extends Recipe {
+private String type; // Only one variable declaration in this class
+// Method to search for a recipe, utilizing fields from the superclass
+public boolean searchRecipe(String keyword) {
+String name1 = this.getName().toLowerCase();
+String inst = this.getInstructions().toLowerCase();
+if (name1.contains(keyword) || inst.contains(keyword)) {
+return true;
+} else {
+return false;
+}
+}
+}
+2.public class MainDishRecipe extends Recipe {
+private String typeOfCuisine; // Single variable declaration for this class
+// Method overriding to search for a recipe, incorporating fields from the superclass
+@Override
+public boolean searchRecipe(String keyword) {
+String name1 = this.getName().toLowerCase();
+String inst = this.getInstructions().toLowerCase();
+if (name1.contains(keyword) || inst.contains(keyword) ||
+this.getTypeOfCuisine().contains(keyword)) {
+return true;
+} else {
+return false;
+}
+}
+}
+3.public class BeverageRecipe extends Recipe {
+public String alcorNot; // Single variable declaration for this class
+// Method overriding to search for a recipe, utilizing fields from the superclass
+@Override
+public boolean searchRecipe(String keyword) {
+String name1 = this.getName().toLowerCase();
+String inst = this.getInstructions().toLowerCase();
+if (name1.contains(keyword) || inst.contains(keyword)) {
+return true;
+} else {
+return false;
+}
+}
+}
+➢ Polymorphism
+Polymorphism is evident in this program through the implementation of methods in different
+ways, tailored to the specific characteristics of each recipe type. For instance, when searching for
+a beverage recipe, the search method considers the type of the drink, while for a MainDish
+recipe, it accounts for the origin or type of the dish.
+In the BeverageRecipe class, the searchRecipe method takes into account the attribute
+"AlcorNot". However, in other classes such as MainDishRecipe, it considers the attribute
+"typeOfCuisine", and in the DessertRecipe class, it utilizes the attribute "type".
+// Example of polymorphism in the BeverageRecipe class
+@Override
+public boolean searchRecipe(String keyword) {
+// Convert name and instructions to lowercase for case-insensitive search
+String name1 = this.getName().toLowerCase();
+String inst = this.getInstructions().toLowerCase();
+// Check if the keyword exists in the name or instructions
+if (name1.contains(keyword) || inst.contains(keyword)) {
+return true;
+} else {
+return false;
+}
+}
+In the MainDishRecipe class, polymorphism is demonstrated through the searchRecipe method,
+which is tailored to the characteristics of main dish recipes. This method accounts for the type of
+cuisine or origin of the dish, in addition to the name and instructions.
+@Override
+public boolean searchRecipe(String keyword) {
+// Convert name and instructions to lowercase for case-insensitive search
+String name1 = this.getName().toLowerCase();
+String inst = this.getInstructions().toLowerCase();
+// Check if the keyword exists in the name, instructions, or type of cuisine
+if (name1.contains(keyword) || inst.contains(keyword) ||
+this.getTypeOfCuisine().contains(keyword)) {
+return true;
+} else {
+return false;
+}
+}
+Interfaces
+The program implements interfaces by having an Interface class called Recipeable which
+requires the classes to implement, the searchRecipe method in different ways, a method to search
+if a String is contained in any of their attributes to help the user search for the recipe in a better
+way.
+GUI
+One of the most important features that ties everything together is the Graphical User Interface.
+The GUI is developed using NetBeans and some features are coded/written independently from
+the Netbeans GUI builder. The GUI is designed in a form that allows the user to quickly browse
+through the elements of drop down lists and preview more information regarding each selection.
+Exceptions
+When dealing with file readings, editing and file exporting, the use of exceptions through a
+try-catch block helps the program behave more and break less.
+Example when exporting to a file
+// When the export button is clicked, export the recipe displayed in the JTextArea
+String recipe = this.jTextArea1.getText();
+// Keeping track of the exported number of recipes
+String name = "recipe" + exported + ".txt";
+File f = new
+File("C:\\Users\\hp\\Documents\\NetBeansProjects\\recipebook_megimenga\\src\\main\\java\\co
+m\\mycompany\\recipebook_megimenga\\" + name);
+// Check if the file already exists
+if (!f.exists()) {
+try {
+// Create a new file
+f.createNewFile();
+exported++;
+// Write the recipe content to the file
+FileOutputStream outputFile = new FileOutputStream(f);
+byte[] fb = recipe.getBytes();
+outputFile.write(fb);
+outputFile.close();
+// Display a message to indicate successful export
+JOptionPane.showMessageDialog(this, "Done");
+} catch (IOException ex) {
+// Handle IOException
+Logger.getLogger(gui.class.getName()).log(Level.SEVERE, null, ex);
+}
+}
+Files
+This program does not use a database, therefore we use files as a way to store our data. The
+program reads from files the recipes, titles and information. It exports to files the recipe that the
+user wants to export and allows the user to edit a recipe through the program by performing this
+edit on the original file.
+Example for reading from a file
+// Define the file path
+File files = new
+File("C:\\Users\\hp\\Documents\\NetBeansProjects\\recipebook_megimenga\\src\\main\\java\\co
+m\\mycompany\\recipebook_megimenga\\RecipesMD.txt");
+// Initialize a Scanner to read from the file
+Scanner file;
+String fileRecipes = "";
+try {
+// Open the file for reading
+file = new Scanner(files);
+// Read each line of the file
+while (file.hasNextLine()) {
+// Append each line to the fileRecipes string
+fileRecipes += file.nextLine();
+}
+} catch (FileNotFoundException ex) {
+// Handle file not found exception
+Logger.getLogger(gui.class.getName()).log(Level.SEVERE, null, ex);
+}
+// Replace the symbol for a new line with an actual new line character
+fileRecipes = fileRecipes.replaceAll("\\\\n", "\n");
+// Create a list containing recipes by splitting the fileRecipes string using a symbol as a divider
+RecipesList = Arrays.asList(fileRecipes.split("#"));
+Collections
+The program stores the data read from the files into List and ArrayLists, making use of the
+Collections framework.
+List<String> information;
+List<String> RecipesList;
+ArrayList<String> titles;
+…
+RecipesList = Arrays.asList(fileRecipes.split("#"));
+Streams
+The program makes use of the FileOutputStream which is an output stream for writing data or
+storing data to a file.
+// Declare a FileOutputStream object
+FileOutputStream fileOut;
+try {
+// Initialize the FileOutputStream with the file path
+fileOut = new
+FileOutputStream("C:\\Users\\hp\\Documents\\NetBeansProjects\\recipebook_megimenga\\src\\
+main\\java\\com\\mycompany\\recipebook_megimenga\\RecipesMD.txt");
+// Write the data (fileInformation) to the output stream
+fileOut.write(fileInformation.getBytes());
+// Close the output stream
+fileOut.close();
+} catch (Exception ex) {
+// Handle any exceptions that occur during the file operation
+Logger.getLogger(gui.class.getName()).log(Level.SEVERE, null, ex);
+}
+// Revalidate the GUI (assuming this is a Swing or similar GUI component)
+this.revalidate();
