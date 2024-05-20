@@ -600,3 +600,779 @@ Logger.getLogger(gui.class.getName()).log(Level.SEVERE, null, ex);
 }
 // Revalidate the GUI (assuming this is a Swing or similar GUI component)
 this.revalidate();
+
+Introduction to the Project:
+Our project is a Recipe Manager Application aimed at organizing and managing various recipes. The application will allow users to add, search, and categorize recipes based on their type, such as beverage, dessert, or main dish. It provides an intuitive interface for users to interact with their recipes effectively.
+
+1) Java Program Codes:
+BeverageRecipe.java:
+
+package com.mycompany.recipebook_julisaloci;
+
+public class BeverageRecipe extends Recipe {
+    
+    public String alcorNot;
+
+    public String getAlcorNot() {
+        return alcorNot;
+    }
+
+    public void setAlcorNot(String alcorNot) {
+        this.alcorNot = alcorNot;
+    }
+
+    @Override
+    public boolean searchRecipe(String keyword) {
+        String name1 = this.getName().toLowerCase();
+        String inst =this.getInstructions().toLowerCase();
+        if(name1.contains(keyword) || inst.contains(keyword))
+            return true;
+        else 
+            return false;
+    }
+}
+
+
+
+DessertRecipe.java:
+
+package com.mycompany.recipebook_julisaloci;
+
+public class DessertRecipe extends Recipe {
+    
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+    
+    @Override
+    public boolean searchRecipe(String keyword) {
+        String name1 = this.getName().toLowerCase();
+        String inst =this.getInstructions().toLowerCase();
+        if(name1.contains(keyword) || inst.contains(keyword))
+            return true;
+        else 
+            return false;
+    }
+}
+
+
+MainDishRecipe.java:
+
+package com.mycompany.recipebook_julisaloci;
+
+public class MainDishRecipe extends Recipe {
+    
+    private String typeOfCuisine;
+
+    public String getTypeOfCuisine() {
+        return typeOfCuisine;
+    }
+
+    public void setTypeOfCuisine(String typeOfCuisine) {
+        this.typeOfCuisine = typeOfCuisine;
+    }
+    
+    @Override
+    public boolean searchRecipe(String keyword) {
+        String name1 = this.getName().toLowerCase();
+        String inst =this.getInstructions().toLowerCase();
+        if(name1.contains(keyword) || inst.contains(keyword) || this.getTypeOfCuisine().contains(keyword))
+            return true;
+        else 
+            return false;
+    }
+}
+
+
+Recipe.java:
+
+package com.mycompany.recipebook_julisaloci;
+
+public class Recipe implements Recipeable {
+   
+    private String name;  
+    private String instructions;
+   
+    public Recipe(String name, String[] listOfIng, String instructions) {
+        this.name = name;
+        this.instructions = instructions;
+    }
+
+    public Recipe() {
+        this.name = null;
+        this.instructions = null;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getInstructions() {
+        return instructions;
+    }
+
+    public void setInstructions(String instructions) {
+        this.instructions = instructions;
+    }
+
+    @Override
+    public boolean searchRecipe(String keyword) {
+        String name1 = this.name.toLowerCase();
+        String inst = this.instructions.toLowerCase();
+        if(name1.contains(keyword) || inst.contains(keyword))
+            return true;
+        else 
+            return false;
+    }
+}
+
+
+Recipeable.java:
+package com.mycompany.recipebook_julisaloci;
+
+public interface Recipeable {
+    boolean searchRecipe(String keyword);
+}
+
+
+GUI : 
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/Application.java to edit this template
+ */
+package com.mycompany.recipebook_julisaloci;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import static java.nio.file.StandardOpenOption.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+
+/**
+ *
+ * @author Julisa Loci
+ */
+public class gui extends javax.swing.JFrame {
+
+    List<String> information;
+    List<String> RecipesList;
+    ArrayList<String> titles;
+    /**
+     * Creates new form gui
+     */
+    // Need to read from the files to get the information on recipes
+    // using # as divider between recipes
+    public gui() {
+        
+        initComponents();
+        this.setTitle("Julisa's Book of Recipes");
+        
+        
+        titles = new ArrayList();
+        
+       
+       this.jTextArea1.setWrapStyleWord(true);
+       this.jTextArea1.setEditable(false);
+       
+       //icon magnifying glass for search button
+       
+       this.searchButton.setIcon(new ImageIcon("C:\\Users\\hp\\Documents\\NetBeansProjects\\recipebook_julisaloci\\src\\main\\java\\com\\mycompany\\recipebook_julisaloci\\icon.png"));
+       
+       //Reading Files with scanner - this file is for the titles.
+       File fileTitles = new File("C:\\Users\\hp\\Documents\\NetBeansProjects\\recipebook_julisaloci\\src\\main\\java\\com\\mycompany\\recipebook_julisaloci\\TitlesMD.txt");
+        Scanner fileTitle;
+        try {
+            fileTitle = new Scanner(fileTitles);
+            
+            while(fileTitle.hasNextLine()) {
+               String Title = fileTitle.nextLine();
+               titles.add(Title);
+               
+               
+           }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(gui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           
+       // Reading the recipes files into a String variable
+       File files = new File("C:\\Users\\hp\\Documents\\NetBeansProjects\\recipebook_julisaloci\\src\\main\\java\\com\\mycompany\\recipebook_julisaloci\\RecipesMD.txt");
+       Scanner file;
+       String fileRecipes = "";
+        try {
+            file = new Scanner(files);  
+            while(file.hasNextLine()) {
+                 fileRecipes += file.nextLine();
+                 
+       }
+          
+            
+       
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(gui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //replaces the symbol for new line with a new line
+        fileRecipes = fileRecipes.replaceAll("\\\\n","\n");
+      
+        //creating a list containing recipes by using a symbol as a divider
+       RecipesList = Arrays.asList(fileRecipes.split("#"));
+       
+       //reading extra information regarding the recipes
+       // Reading the recipes files into a String variable
+       File filesInfo = new File("C:\\Users\\hp\\Documents\\NetBeansProjects\\recipebook_julisaloci\\src\\main\\java\\com\\mycompany\\recipebook_julisaloci\\infosMD.txt");
+       String fileInformation = "";
+        try {
+            file = new Scanner(filesInfo);  
+            while(file.hasNextLine()) {
+                 fileInformation += file.nextLine();
+                 
+       } 
+       
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(gui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        information = Arrays.asList(fileInformation.split("\\\\n"));
+       
+       //Infos follow the format typeClass - name - type of dish/drink
+     
+       //putting the recipes along the titles in a hashmap
+      
+       for(int i=0; i < titles.size();i++) {
+    
+           String[] info = information.get(i).split("\\;");
+           String category = info[0];
+           String name = info[1];
+           String cType = info[2];
+           if(category.equals("MainDish")){
+               MainDishRecipe rec = new MainDishRecipe();
+               rec.setName(titles.get(i));
+               rec.setInstructions(RecipesList.get(i));
+               rec.setTypeOfCuisine(cType);
+               recipes.put(titles.get(i), rec);
+           }
+           else if(category.equals("Dessert")){
+               DessertRecipe rec = new DessertRecipe();
+                rec.setName(titles.get(i));
+                 rec.setInstructions(RecipesList.get(i));
+                 rec.setType(cType);
+               recipes.put(titles.get(i), rec);
+           }
+           else {
+               //drink
+               BeverageRecipe rec = new BeverageRecipe();
+                rec.setName(titles.get(i));
+                 rec.setInstructions(RecipesList.get(i));
+                 if(cType.equals("Alcoholic")){
+                 rec.setAlcorNot("Alcoholic");
+                 } else if(cType.equals("Non-Alcoholic")) {
+                     rec.setAlcorNot("Non-Alcoholic");
+                 }
+                
+               recipes.put(titles.get(i), rec);
+           }
+           
+          
+       }
+       
+ 
+       
+       
+       
+       
+        
+    } 
+
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBox3 = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        searchButton = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(245, 245, 245));
+
+        jPanel3.setBackground(new java.awt.Color(250, 250, 250));
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setLineWrap(true);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
+        );
+
+        jPanel2.setBackground(new java.awt.Color(248, 248, 240));
+
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        jLabel1.setText("CATEGORIES");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Main Dish", "Spaghetti Carbonara", "Baked potatoes", "Rice (Albanian Recipe)", "Burek with cheese" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dessert", "Tiramisu", "Tres leches", "Brownies", " " }));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Beverages", "Strawberry  Banana Smoothie", "Christmas punch", "Hot cocoa", "" }));
+        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox3ActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Arial", 1, 48)); // NOI18N
+        jLabel2.setText("RECIPES");
+
+        jButton1.setText("Export Recipe");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Delete");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Edit");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        searchButton.setText("search");
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(23, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.Alignment.TRAILING, 0, 294, Short.MAX_VALUE)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.TRAILING, 0, 294, Short.MAX_VALUE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(searchButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(60, 60, 60))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton3)
+                    .addComponent(jButton2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchButton))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(29, 29, 29))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+        
+        // Main dish selection, when selected, it should show the recipe on the right 
+        String displayMD = this.jComboBox1.getSelectedItem().toString();
+        this.jTextArea1.setText("");
+        this.jTextArea1.setWrapStyleWord(true);
+        if(this.jComboBox1.getSelectedIndex()!=0) {
+          this.jTextArea1.append(this.recipes.get(displayMD).getInstructions());
+          this.currentRecSel = this.jComboBox1.getSelectedItem().toString();
+        }
+        
+        
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        // TODO add your handling code here:
+         String displayMD = this.jComboBox2.getSelectedItem().toString();
+        this.jTextArea1.setText("");
+        this.jTextArea1.setWrapStyleWord(true);
+        if(this.jComboBox2.getSelectedIndex()!=0)  {
+            this.jTextArea1.append(this.recipes.get(displayMD).getInstructions());{
+             this.currentRecSel = this.jComboBox2.getSelectedItem().toString();
+        }
+        }
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+        // TODO add your handling code here:
+         String displayMD = this.jComboBox3.getSelectedItem().toString();
+        this.jTextArea1.setText("");
+        this.jTextArea1.setWrapStyleWord(true);
+        if(this.jComboBox3.getSelectedIndex()!=0){
+            this.jTextArea1.append(this.recipes.get(displayMD).getInstructions());
+             this.currentRecSel = this.jComboBox3.getSelectedItem().toString();
+        }
+    }//GEN-LAST:event_jComboBox3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+       //When this button is clicked, export the showing recipe on the JTextArea
+       String recipe = this.jTextArea1.getText();
+      
+       //Keeping track of the exported number of recipes
+       String name = "recipe"+exported+".txt";
+       File f = new File("C:\\Users\\hp\\Documents\\NetBeansProjects\\recipebook_julisaloci\\src\\main\\java\\com\\mycompany\\recipebook_julisaloci\\"+name);
+        if(!f.exists()){
+           try {
+               f.createNewFile();
+               exported++;
+             
+               FileOutputStream outputFile = new FileOutputStream(f);
+               byte[] fb = recipe.getBytes();
+               outputFile.write(fb);
+               JOptionPane.showMessageDialog(this, "Done");
+               
+              
+           } catch (IOException ex) {
+               Logger.getLogger(gui.class.getName()).log(Level.SEVERE, null, ex);
+           }
+}
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        //Delete 
+        if(this.jComboBox1.getSelectedItem()!=this.jComboBox1.getItemAt(0)) {
+        this.jComboBox1.removeItem(this.jComboBox1.getSelectedItem());}
+        else if(this.jComboBox2.getSelectedItem()!=this.jComboBox2.getItemAt(0)) {
+         this.jComboBox2.removeItem(this.jComboBox2.getSelectedItem());
+        }
+        else if(this.jComboBox3.getSelectedItem()!=this.jComboBox3.getItemAt(0)) {
+            this.jComboBox3.removeItem(this.jComboBox3.getSelectedItem());
+        }
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        //This button saves the edit made to the selection, the change in recipe
+        //if the button's current text says "Done", means we are in Edit Mode
+        
+        if(this.jButton3.getText().equals("Done")) {
+        
+        String recUpdated = this.jTextArea1.getText();
+        
+             //find index 
+          
+    int index = 0;
+     for(int i = 0; i < this.titles.size();i++) {
+       if(titles.get(i).equals(this.currentRecSel)){
+           index = i;
+           break;
+       }
+      
+     } 
+      
+        this.RecipesList.set(index, recUpdated);
+        this.recipes.get(this.currentRecSel).setInstructions(recUpdated);
+        
+        this.jButton3.setText("Edit");
+        this.jTextArea1.setEditable(false);
+      
+//write to file  -  UPDATE the file which stores the recipes with the edited Instructions
+      File filesInfo = new File("C:\\Users\\hp\\Documents\\NetBeansProjects\\recipebook_julisaloci\\src\\main\\java\\com\\mycompany\\recipebook_julisaloci\\RecipesMD.txt");
+       String fileInformation = "";
+       int i = 0;
+       //add n to each line and # as divider between recipes
+       for(String a: RecipesList) {
+           for( String b: a.split("\n")){
+             fileInformation = fileInformation + b + "\\" + "n"+"\n";
+             
+           }
+             fileInformation = fileInformation + "\n";
+             fileInformation= fileInformation + "#";
+             fileInformation= fileInformation + "\n";
+           
+       }
+     //Update file w string
+        FileOutputStream fileOut;
+        try {
+            fileOut = new FileOutputStream("C:\\Users\\hp\\Documents\\NetBeansProjects\\recipebook_julisaloci\\src\\main\\java\\com\\mycompany\\recipebook_julisaloci\\RecipesMD.txt");
+            fileOut.write(fileInformation.getBytes());
+            
+            fileOut.close();
+        } catch (Exception ex) {
+            Logger.getLogger(gui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.revalidate();
+         }  
+        
+    else if(this.jButton3.getText().equals("Edit")){
+         this.jButton3.setText("Done");
+          //make it non editable
+         this.jTextArea1.setEditable(true);
+         //change the text
+         this.revalidate();
+     }
+        
+  
+   
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        // Search for a recipe containing the words in the search barin the title
+        String searchIt = this.jTextField1.getText().toLowerCase();
+        // Search the titles
+       this.jTextArea1.setText("");
+       this.jTextArea1.setEditable(false);
+       if(this.jTextField1.getText()!="") {
+       for(String r:this.recipes.keySet()){
+         
+           if(this.recipes.get(r).searchRecipe(searchIt)==true){
+               this.jTextArea1.append(this.recipes.get(r).getInstructions());
+                this.repaint();
+                break;
+           }
+       }
+       }
+    
+
+       
+       /* different way of searching 
+     for(int i = 0; i < this.titles.size();i++) {
+         String title = titles.get(i);
+         title = title.toLowerCase();
+         String rec1 = this.recipes.get(titles.get(i)).getInstructions();
+         rec1 = rec1.toLowerCase();
+       if(title.contains(searchIt)){
+           JOptionPane.showMessageDialog(rootPane, "Done!");
+           this.jTextArea1.append(this.recipes.get(titles.get(i)).getInstructions());
+           this.repaint();
+           break;
+       }
+       else if(rec1.contains(searchIt)) {
+           this.jTextArea1.append(this.recipes.get(titles.get(i)).getInstructions());
+           this.repaint();
+           break;
+       }
+    */
+      
+     
+     
+                
+           
+    }//GEN-LAST:event_searchButtonActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(gui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(gui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(gui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(gui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new gui().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton searchButton;
+    // End of variables declaration//GEN-END:variables
+     HashMap<String, Recipe> recipes = new HashMap<String, Recipe>();
+     int exported = 0; //keeps count of the export no to generate multiple files with diff names.
+     String currentRecSel = null;
+     Recipe searchedRec;
+   
+    
+}
+
+
+This GUI class is responsible for providing a graphical interface for the Recipe Manager Application. Here's how it works:
+
+Initialization: Upon initialization, the GUI reads recipe information from files, including titles, recipes, and additional information.
+
+Display: The main window displays categories of recipes in combo boxes (Main Dish, Dessert, Beverages). When a category is selected, it displays the corresponding recipe in the text area.
+
+Export: Users can export the displayed recipe by clicking the "Export Recipe" button. This action creates a new text file with the recipe content.
+
+Delete: Users can delete a recipe by selecting it from the combo boxes and clicking the "Delete" button.
+
+Edit: Users can edit a recipe by selecting it from the combo boxes, making changes in the text area, and clicking the "Edit" button. When in "Edit" mode, the button changes to "Done," indicating that changes are being saved.
+
+Search: Users can search for recipes by typing keywords in the search bar and clicking the "Search" button. The GUI then displays the first recipe that matches the search criteria.
+
+This GUI class integrates with the Recipe classes (BeverageRecipe, DessertRecipe, MainDishRecipe) and utilizes them to manage recipe data effectively.
+
+To use this GUI class effectively, integrate it with the Recipe classes and ensure that the file paths for reading and writing recipe information are correctly set.
+
+Overall, this GUI class provides a user-friendly interface for managing recipes efficiently.
+
