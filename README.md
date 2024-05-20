@@ -426,47 +426,42 @@ organization.
 Notably, the classes DessertRecipe, MainDishRecipe, and BeverageRecipe inherit attributes and
 behaviors from the parent class Recipe through the use of the extends keyword.
 1.public class DessertRecipe extends Recipe {
-private String type; // Only one variable declaration in this class
-// Method to search for a recipe, utilizing fields from the superclass
-public boolean searchRecipe(String keyword) {
-String name1 = this.getName().toLowerCase();
-String inst = this.getInstructions().toLowerCase();
-if (name1.contains(keyword) || inst.contains(keyword)) {
-return true;
-} else {
-return false;
+    private String type; // Only one variable declaration in this class
+
+    // Method to search for a recipe, utilizing fields from the superclass
+    public boolean searchRecipe(String keyword) {
+        String name1 = this.getName().toLowerCase();
+        String inst = this.getInstructions().toLowerCase();
+        
+        return name1.contains(keyword) || inst.contains(keyword);
+    }
 }
-}
-}
+
 2.public class MainDishRecipe extends Recipe {
-private String typeOfCuisine; // Single variable declaration for this class
-// Method overriding to search for a recipe, incorporating fields from the superclass
-@Override
-public boolean searchRecipe(String keyword) {
-String name1 = this.getName().toLowerCase();
-String inst = this.getInstructions().toLowerCase();
-if (name1.contains(keyword) || inst.contains(keyword) ||
-this.getTypeOfCuisine().contains(keyword)) {
-return true;
-} else {
-return false;
+    private String typeOfCuisine; 
+
+    @Override
+    public boolean searchRecipe(String keyword) {
+        String name = this.getName().toLowerCase();
+        String instructions = this.getInstructions().toLowerCase();
+        String cuisineType = this.getTypeOfCuisine().toLowerCase();
+        
+        return name.contains(keyword) || instructions.contains(keyword) || cuisineType.contains(keyword);
+    }
 }
-}
-}
+
 3.public class BeverageRecipe extends Recipe {
-public String alcorNot; // Single variable declaration for this class
-// Method overriding to search for a recipe, utilizing fields from the superclass
-@Override
-public boolean searchRecipe(String keyword) {
-String name1 = this.getName().toLowerCase();
-String inst = this.getInstructions().toLowerCase();
-if (name1.contains(keyword) || inst.contains(keyword)) {
-return true;
-} else {
-return false;
+    public String alcorNot; 
+
+    @Override
+    public boolean searchRecipe(String keyword) {
+        String name = this.getName().toLowerCase();
+        String instructions = this.getInstructions().toLowerCase();
+        
+        return name.contains(keyword) || instructions.contains(keyword);
+    }
 }
-}
-}
+
 ➢ Polymorphism
 Polymorphism is evident in this program through the implementation of methods in different
 ways, tailored to the specific characteristics of each recipe type. For instance, when searching for
@@ -475,74 +470,79 @@ recipe, it accounts for the origin or type of the dish.
 In the BeverageRecipe class, the searchRecipe method takes into account the attribute
 "AlcorNot". However, in other classes such as MainDishRecipe, it considers the attribute
 "typeOfCuisine", and in the DessertRecipe class, it utilizes the attribute "type".
-// Example of polymorphism in the BeverageRecipe class
 @Override
 public boolean searchRecipe(String keyword) {
-// Convert name and instructions to lowercase for case-insensitive search
-String name1 = this.getName().toLowerCase();
-String inst = this.getInstructions().toLowerCase();
-// Check if the keyword exists in the name or instructions
-if (name1.contains(keyword) || inst.contains(keyword)) {
-return true;
-} else {
-return false;
+    // Convert name and instructions to lowercase for case-insensitive search
+    String name = this.getName().toLowerCase();
+    String instructions = this.getInstructions().toLowerCase();
+    
+    // Check if the keyword exists in the name or instructions
+    return name.contains(keyword) || instructions.contains(keyword);
 }
-}
+
 In the MainDishRecipe class, polymorphism is demonstrated through the searchRecipe method,
 which is tailored to the characteristics of main dish recipes. This method accounts for the type of
 cuisine or origin of the dish, in addition to the name and instructions.
 @Override
 public boolean searchRecipe(String keyword) {
-// Convert name and instructions to lowercase for case-insensitive search
-String name1 = this.getName().toLowerCase();
-String inst = this.getInstructions().toLowerCase();
-// Check if the keyword exists in the name, instructions, or type of cuisine
-if (name1.contains(keyword) || inst.contains(keyword) ||
-this.getTypeOfCuisine().contains(keyword)) {
-return true;
-} else {
-return false;
+    // Convert name and instructions to lowercase for case-insensitive search
+    String name = this.getName().toLowerCase();
+    String instructions = this.getInstructions().toLowerCase();
+    
+    // Check if the keyword exists in the name, instructions, or type of cuisine
+    if (name.contains(keyword) || instructions.contains(keyword) ||
+        this.getTypeOfCuisine().contains(keyword)) {
+        return true;
+    } else {
+        return false;
+    }
 }
-}
+
 Interfaces
 The program implements interfaces by having an Interface class called Recipeable which
 requires the classes to implement, the searchRecipe method in different ways, a method to search
 if a String is contained in any of their attributes to help the user search for the recipe in a better
 way.
+
 GUI
 One of the most important features that ties everything together is the Graphical User Interface.
 The GUI is developed using NetBeans and some features are coded/written independently from
 the Netbeans GUI builder. The GUI is designed in a form that allows the user to quickly browse
 through the elements of drop down lists and preview more information regarding each selection.
+
 Exceptions
 When dealing with file readings, editing and file exporting, the use of exceptions through a
 try-catch block helps the program behave more and break less.
 Example when exporting to a file
+
 // When the export button is clicked, export the recipe displayed in the JTextArea
 String recipe = this.jTextArea1.getText();
+
 // Keeping track of the exported number of recipes
 String name = "recipe" + exported + ".txt";
-File f = new
-File("C:\\Users\\hp\\Documents\\NetBeansProjects\\recipebook_megimenga\\src\\main\\java\\co
-m\\mycompany\\recipebook_megimenga\\" + name);
+File f = new File("C:\\Users\\hp\\Documents\\NetBeansProjects\\recipebook_megimenga\\src\\main\\java\\com\\mycompany\\recipebook_megimenga\\" + name);
+
 // Check if the file already exists
 if (!f.exists()) {
-try {
-// Create a new file
-f.createNewFile();
-exported++;
-// Write the recipe content to the file
-FileOutputStream outputFile = new FileOutputStream(f);
-byte[] fb = recipe.getBytes();
-outputFile.write(fb);
-outputFile.close();
-// Display a message to indicate successful export
-JOptionPane.showMessageDialog(this, "Done");
-} catch (IOException ex) {
-// Handle IOException
-Logger.getLogger(gui.class.getName()).log(Level.SEVERE, null, ex);
+    try {
+        // Create a new file
+        f.createNewFile();
+        exported++;
+        
+        // Write the recipe content to the file
+        FileOutputStream outputFile = new FileOutputStream(f);
+        byte[] fb = recipe.getBytes();
+        outputFile.write(fb);
+        outputFile.close();
+        
+        // Display a message to indicate successful export
+        JOptionPane.showMessageDialog(this, "Done");
+    } catch (IOException ex) {
+        // Handle IOException
+        Logger.getLogger(gui.class.getName()).log(Level.SEVERE, null, ex);
+    }
 }
-}
+
 Files
 This program does not use a database, therefore we use files as a way to store our data. The
 program reads from files the recipes, titles and information. It exports to files the recipe that the
@@ -550,56 +550,55 @@ user wants to export and allows the user to edit a recipe through the program by
 edit on the original file.
 Example for reading from a file
 // Define the file path
-File files = new
-File("C:\\Users\\hp\\Documents\\NetBeansProjects\\recipebook_megimenga\\src\\main\\java\\co
-m\\mycompany\\recipebook_megimenga\\RecipesMD.txt");
+File files = new File("C:\\Users\\hp\\Documents\\NetBeansProjects\\recipebook_megimenga\\src\\main\\java\\com\\mycompany\\recipebook_megimenga\\RecipesMD.txt");
+
 // Initialize a Scanner to read from the file
 Scanner file;
 String fileRecipes = "";
 try {
-// Open the file for reading
-file = new Scanner(files);
-// Read each line of the file
-while (file.hasNextLine()) {
-// Append each line to the fileRecipes string
-fileRecipes += file.nextLine();
-}
+    // Open the file for reading
+    file = new Scanner(files);
+    // Read each line of the file
+    while (file.hasNextLine()) {
+        // Append each line to the fileRecipes string
+        fileRecipes += file.nextLine();
+    }
 } catch (FileNotFoundException ex) {
-// Handle file not found exception
-Logger.getLogger(gui.class.getName()).log(Level.SEVERE, null, ex);
+    // Handle file not found exception
+    Logger.getLogger(gui.class.getName()).log(Level.SEVERE, null, ex);
 }
+
 // Replace the symbol for a new line with an actual new line character
 fileRecipes = fileRecipes.replaceAll("\\\\n", "\n");
+
 // Create a list containing recipes by splitting the fileRecipes string using a symbol as a divider
 RecipesList = Arrays.asList(fileRecipes.split("#"));
-Collections
-The program stores the data read from the files into List and ArrayLists, making use of the
-Collections framework.
+
+// The program stores the data read from the files into List and ArrayLists, making use of the Collections framework.
 List<String> information;
 List<String> RecipesList;
 ArrayList<String> titles;
-…
+// ...
 RecipesList = Arrays.asList(fileRecipes.split("#"));
-Streams
-The program makes use of the FileOutputStream which is an output stream for writing data or
-storing data to a file.
+
+// The program makes use of the FileOutputStream which is an output stream for writing data or storing data to a file.
 // Declare a FileOutputStream object
 FileOutputStream fileOut;
 try {
-// Initialize the FileOutputStream with the file path
-fileOut = new
-FileOutputStream("C:\\Users\\hp\\Documents\\NetBeansProjects\\recipebook_megimenga\\src\\
-main\\java\\com\\mycompany\\recipebook_megimenga\\RecipesMD.txt");
-// Write the data (fileInformation) to the output stream
-fileOut.write(fileInformation.getBytes());
-// Close the output stream
-fileOut.close();
+    // Initialize the FileOutputStream with the file path
+    fileOut = new FileOutputStream("C:\\Users\\hp\\Documents\\NetBeansProjects\\recipebook_megimenga\\src\\main\\java\\com\\mycompany\\recipebook_megimenga\\RecipesMD.txt");
+    // Write the data (fileInformation) to the output stream
+    fileOut.write(fileInformation.getBytes());
+    // Close the output stream
+    fileOut.close();
 } catch (Exception ex) {
-// Handle any exceptions that occur during the file operation
-Logger.getLogger(gui.class.getName()).log(Level.SEVERE, null, ex);
+    // Handle any exceptions that occur during the file operation
+    Logger.getLogger(gui.class.getName()).log(Level.SEVERE, null, ex);
 }
+
 // Revalidate the GUI (assuming this is a Swing or similar GUI component)
 this.revalidate();
+
 
 Introduction to the Project:
 Our project is a Recipe Manager Application aimed at organizing and managing various recipes. The application will allow users to add, search, and categorize recipes based on their type, such as beverage, dessert, or main dish. It provides an intuitive interface for users to interact with their recipes effectively.
