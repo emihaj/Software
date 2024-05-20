@@ -1375,3 +1375,5 @@ To use this GUI class effectively, integrate it with the Recipe classes and ensu
 
 Overall, this GUI class provides a user-friendly interface for managing recipes efficiently.
 
+
+
